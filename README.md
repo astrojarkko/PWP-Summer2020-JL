@@ -1,7 +1,7 @@
-# PWP SPRING 2020
-# PROJECT NAME
+# PWP SUMMER 2020
+# Climbing route tracker and training planner
 # Group information
-* Student 1. Name and email
+* Student 1. Jarkko Laine, jarkko.laine@kapsi.fi
 * Student 2. Name and email
 * Student 3. Name and email
 
