@@ -23,7 +23,7 @@ def populate_models():
         db.session.commit()
 
         # for each add three routes climbed, the locations, disciplines, and grades
-        # are randomly taken in the above lists
+        # are taken from the above lists
         for j in range(1, 3):
             route = Route(user=user,
                           date=datetime.today(),
