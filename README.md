@@ -28,12 +28,18 @@ Project has been coded using Python version 3.8.2, which necessitated changing s
 
 pip3 install -r requirements.txt
 
+For testing pytest is used, and can be installed with the commands:
+
+pip3 install pytest
+pip3 install pytest-cov
+
 ## Initialize and populate the database in terminal with the command:
 
 ./init_db.sh
 
-## Run tests
+## How to run tests
 
-TODO
+### To test the database construction run the following command in src folder:
+pytest test_db.py
 
 __Remember to include all required documentation and HOWTOs, including how to create and populate the database, how to run and test the API, the url to the entrypoint and instructions on how to setup and run the client__

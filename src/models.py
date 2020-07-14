@@ -20,16 +20,21 @@ class User(db.Model):
     firstName = db.Column(db.String(64), nullable=True)
     lastName = db.Column(db.String(64), nullable=True)
 
+    # delete routes in case the parent table item (user) is deleted
     routes = db.relationship("Route", cascade="delete", back_populates="user")
+
 
 # Table: routes
 class Route(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    # when user is deleted, also routes are deleted
     userId = db.Column(db.Integer, db.ForeignKey("user.id", ondelete="CASCADE"), nullable=False)
     date = db.Column(db.Date, nullable=False)
-    locationId = db.Column(db.Integer, db.ForeignKey("location.id", ondelete="SET NULL"), nullable=False)
-    disciplineId = db.Column(db.Integer, db.ForeignKey("discipline.id", ondelete="SET NULL"), nullable=False)
-    gradeId = db.Column(db.Integer, db.ForeignKey("grade.id", ondelete="SET NULL"), nullable=False)
+    # if location, discipline, or grade is deleted we want to keep record of the route still,
+    # so we set these values to NULL in case of deletion in the parent table
+    locationId = db.Column(db.Integer, db.ForeignKey("location.id", ondelete="SET NULL"))
+    disciplineId = db.Column(db.Integer, db.ForeignKey("discipline.id", ondelete="SET NULL"))
+    gradeId = db.Column(db.Integer, db.ForeignKey("grade.id", ondelete="SET NULL"))
     extraInfo = db.Column(db.String(250), nullable=True)
 
     user = db.relationship("User", back_populates="routes")
@@ -41,7 +46,7 @@ class Route(db.Model):
 # Table: locations
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False, unique=True)
+    name = db.Column(db.String(100), nullable=False, unique=True, default="Oulun Kiipeilykeskus")
 
     routes = db.relationship("Route", back_populates="location")
 
