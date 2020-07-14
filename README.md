@@ -26,7 +26,7 @@ Then activate the environment
 
 Project has been coded using Python version 3.8.2, which necessitated changing some of the course requirements to newer versions (namely werkzeug from 0.15.1 to 0.15.5). Install the required packages with:
 
-pip3 install -r requirements.txt
+    pip3 install -r requirements.txt
 
 For testing pytest is used, and can be installed with the commands:
 
