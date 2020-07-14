@@ -12,15 +12,15 @@ With one final deadline, and single meeting in August.
 
 For example for python 3:
 
-python3 -m venv PWP-Summer2020-JL
+    python3 -m venv PWP-Summer2020-JL
 
 Then activate the environment
 
-source path-to-PWP-Summer2020-JL/bin/activate
+    source path-to-PWP-Summer2020-JL/bin/activate
 
 ### Setup environment variables
 
-export FLASK_ENV=DEVELOPMENT
+    export FLASK_ENV=DEVELOPMENT
 
 ### Python version and dependencies
 
@@ -30,16 +30,26 @@ pip3 install -r requirements.txt
 
 For testing pytest is used, and can be installed with the commands:
 
-pip3 install pytest
-pip3 install pytest-cov
+    pip3 install pytest
+    pip3 install pytest-cov
 
 ## Initialize and populate the database in terminal with the command:
 
-./init_db.sh
+    ./init_db.sh
 
 ## How to run tests
 
 ### To test the database construction run the following command in src folder:
-pytest test_db.py
 
+    pytest test_db.py
+
+
+
+## Sources USED
+
+Much of the code is based on the examples given in the [course material](https://lovelace.oulu.fi/ohjelmoitava-web/programmable-web-project-summer-2020/).
+
+
+
+## old, remove when done:
 __Remember to include all required documentation and HOWTOs, including how to create and populate the database, how to run and test the API, the url to the entrypoint and instructions on how to setup and run the client__
