@@ -20,7 +20,12 @@ Then activate the environment
 
 ### Setup environment variables
 
+    export FLASK_APP=routetracker
     export FLASK_ENV=DEVELOPMENT
+
+Or use the script:
+
+    source dev_env.sh
 
 ### Python version and dependencies
 
@@ -28,28 +33,30 @@ Project has been coded using Python version 3.8.2, which necessitated changing s
 
     pip3 install -r requirements.txt
 
+To install the project run the following command in the project main folder:
+
+    pip3 install -e .
+
+Next initialize the database and populate it:
+
+    flask init-db
+    flask testgen
+
 For testing pytest is used, and can be installed with the commands:
 
     pip3 install pytest
     pip3 install pytest-cov
 
-## Initialize and populate the database in terminal with the command:
+Run the test with:
 
-    ./init_db.sh
+    pytest
 
-## How to run tests
+Or with coverage information:
 
-### To test the database construction run the following command in src folder:
-
-    pytest test_db.py
+    TODO
 
 
+## Sources used
 
-## Sources USED
-
-Much of the code is based on the examples given in the [course material](https://lovelace.oulu.fi/ohjelmoitava-web/programmable-web-project-summer-2020/).
-
-
-
-## old, remove when done:
-__Remember to include all required documentation and HOWTOs, including how to create and populate the database, how to run and test the API, the url to the entrypoint and instructions on how to setup and run the client__
+Much of the code is based or motivated by the examples given in the [course material](https://lovelace.oulu.fi/ohjelmoitava-web/programmable-web-project-summer-2020/), and
+the [sensorhub example API](https://github.com/enkwolf/pwp-course-sensorhub-api-example).

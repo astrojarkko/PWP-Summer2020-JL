@@ -1,0 +1,2 @@
+graft routetracker/static
+global-exclude *.pyc
