@@ -16,7 +16,7 @@ This file includes the classes for the Grade model resources of the API
 
 class GradeCollection(Resource):
     """
-    Grade collection resource
+    Grade collection resource: GET
     """
 
     def get(self, user):
@@ -39,7 +39,7 @@ class GradeCollection(Resource):
         body.add_control_routes_all(user)
         body["items"] = []
 
-        # get the grades, and only get unique values
+        # get the grades, and only return unique values
         for db_route in Route.query.filter_by(user=db_user).group_by(Route.gradeId):
             item = RouteBuilder(
                         grade=db_route.grade.name
@@ -54,12 +54,12 @@ class GradeCollection(Resource):
 
 class GradeItem(Resource):
     """
-    Grade item resource
+    Grade item resource: GET
     """
 
     def get(self, user, grade):
         """
-        Get all routes for specific grade for user.
+        Get all routes in specific grade for user.
         """
         # find the approriate user with the id
         db_user = User.query.filter_by(id=user).first()
@@ -85,7 +85,7 @@ class GradeItem(Resource):
         body.add_control_grades_all(user)
         body["items"] = []
 
-        # get the routes with proper grade, and only get unique values
+        # get the routes with specific grade
         for db_route in Route.query.filter(Route.user==db_user).filter(Route.gradeId==grade).all():
             item = RouteBuilder(
                         date=db_route.date.isoformat(),

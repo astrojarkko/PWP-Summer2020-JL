@@ -113,53 +113,61 @@ class Grade(db.Model):
 # to initialize the database
 @click.command("init-db")
 @with_appcontext
-def init_db_command():
+# we exclude this section from testing, since they are only used to populate the DB
+def init_db_command():  # pragma: no cover
     db.create_all()
+    print("Database initialized.")
 
-# to populate the database for testing etc.
+# to populate the database for testing with users that have several climbs etc.
 # NOTE:
 # modified from the models.py of the pwp-course-sensorhub-api-example
 @click.command("testgen")
 @with_appcontext
-def generate_test_data():
+# we also exclude this from testing
+def generate_test_data():  # pragma: no cover
     import random
     from datetime import datetime
 
     # define pre-described climbing disciplines, grades, and locations
-    disciplines = ["Bouldering", "Bouldering", "Toprope"]
-    grades = ["6A+", "6A+", "6B+"]
+    disciplines = ["Bouldering", "Bouldering", "Toprope", "Lead"]
+    grades = ["5", "5", "6A", "6A", "6A+", "6A+", "6B", "6B", "6B+"]
     locations = ["Oulun Kiipeilykeskus", "Oulun Kiipeilykeskus", "Magic Woods"]
 
-    for i in range(1, 5):
-        user = User(email=f"{i}email@url.com", firstName=f"First{i}", lastName=f"Last{i}")
+    for i in range(1, 6):
+        user = User(email="{}email@url.com".format(i), firstName="First{}".format(i), lastName="Last{}".format(i))
         db.session.add(user)
         db.session.commit()
 
         # for each add three routes climbed, the locations, disciplines, and grades
         # are taken from the above lists
-        for j in range(0, 3):
+        for j in range(0, 10):
 
             # check if the location, discipline, or grade already exists, it it does
             # then use the already found one
-            location = db.session.query(Location).filter_by(name=locations[j]).first()
+            loc = random.choice(locations)
+            location = db.session.query(Location).filter_by(name=loc).first()
             if not location:
-                location = Location(name=locations[j])
+                location = Location(name=loc)
 
-            discipline = db.session.query(Discipline).filter_by(name=disciplines[j]).first()
+            discp = random.choice(disciplines)
+            discipline = db.session.query(Discipline).filter_by(name=discp).first()
             if not discipline:
-                discipline = Discipline(name=disciplines[j])
+                discipline = Discipline(name=discp)
 
-            grade = db.session.query(Grade).filter_by(name=grades[j]).first()
+            gr = random.choice(grades)
+            grade = db.session.query(Grade).filter_by(name=gr).first()
             if not grade:
-                grade = Grade(name=grades[j])
+                grade = Grade(name=gr)
 
             route = Route(user=user,
                           date=datetime.today(),
                           location=location,
                           discipline=discipline,
                           grade=grade,
-                          extraInfo=f"this is {i}, {j}"
+                          extraInfo="this is {}, {}".format(i, j)
                           )
             # add and commit changes
             db.session.add(route)
             db.session.commit()
+
+    print("Database populated succesfully.")

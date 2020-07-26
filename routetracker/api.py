@@ -7,6 +7,11 @@ from routetracker.resources.location import LocationCollection, LocationItem
 from routetracker.resources.discipline import DisciplineCollection, DisciplineItem
 from routetracker.resources.grade import GradeCollection, GradeItem
 
+
+"""
+Adapted from the pwp-course-sensorhub-api-example api.py example
+"""
+
 api_bp = Blueprint("api", __name__, url_prefix="/api")
 api = Api(api_bp)
 

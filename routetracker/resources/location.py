@@ -16,7 +16,7 @@ This file includes the classes for the Location model resources of the API
 
 class LocationCollection(Resource):
     """
-    Location collection resource
+    Location collection resource: GET
     """
 
     def get(self, user):
@@ -39,7 +39,7 @@ class LocationCollection(Resource):
         body.add_control_routes_all(user)
         body["items"] = []
 
-        # get the locations, and only get unique values
+        # get the locations, and only return unique values
         for db_route in Route.query.filter_by(user=db_user).group_by(Route.locationId):
             item = RouteBuilder(
                         location=db_route.location.name
@@ -53,12 +53,12 @@ class LocationCollection(Resource):
 
 class LocationItem(Resource):
     """
-    Location item resource
+    Location item resource: GET
     """
 
     def get(self, user, location):
         """
-        Get all routes for specific location for user.
+        Get all routes in specific location for user.
         """
         # find the approriate user with the id
         db_user = User.query.filter_by(id=user).first()
@@ -67,7 +67,7 @@ class LocationItem(Resource):
                         404, "Not found",
                         "No user was found with the id {}".format(user)
                         )
-        # test if grade is found for user
+        # test if location is found for user
         db_location = Route.query.filter(Route.user==db_user).filter(Route.locationId==location).first()
         if db_location is None:
             return create_error_response(
@@ -84,7 +84,7 @@ class LocationItem(Resource):
         body.add_control_locations_all(user)
         body["items"] = []
 
-        # get the routes with proper location, and only get unique values
+        # get the routes in the specific location
         for db_route in Route.query.filter(Route.user==db_user).filter(Route.locationId==location).all():
             item = RouteBuilder(
                         date=db_route.date.isoformat(),

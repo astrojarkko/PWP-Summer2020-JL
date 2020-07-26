@@ -37,10 +37,23 @@ To install the project run the following command in the project main folder:
 
     pip3 install -e .
 
+### Initializing database and running API
+
 Next initialize the database and populate it:
 
     flask init-db
     flask testgen
+
+After this the API can be with the command:
+
+    flask run
+
+### Accessing API with client
+
+TODO
+
+
+### Running tests
 
 For testing pytest is used, and can be installed with the commands:
 
@@ -49,11 +62,14 @@ For testing pytest is used, and can be installed with the commands:
 
 Run the test with:
 
-    pytest
+    pytest -W ignore::DeprecationWarning
 
 Or with coverage information:
 
-    TODO
+    pytest --cov-report term-missing --cov=routetracker -W ignore::DeprecationWarning
+
+The option "-W ignore::DeprecationWarning" is added to ignore the literal thousands of deprecation warnings,
+which are raised by the (old) libraries used in the course in version 3.8.2 of Python.
 
 
 ## Sources used

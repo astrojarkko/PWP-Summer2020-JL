@@ -21,7 +21,7 @@ class DisciplineCollection(Resource):
 
     def get(self, user):
         """
-        Get all unique disciplines for user.
+        Get all unique disciplines for user: GET
         """
         # find the approriate user with the id
         db_user = User.query.filter_by(id=user).first()
@@ -39,7 +39,7 @@ class DisciplineCollection(Resource):
         body.add_control_routes_all(user)
         body["items"] = []
 
-        # get the disciplines, and only get unique values
+        # get the disciplines, and only return unique values
         for db_route in Route.query.filter_by(user=db_user).group_by(Route.disciplineId):
             item = RouteBuilder(
                         discipline=db_route.discipline.name
@@ -53,12 +53,12 @@ class DisciplineCollection(Resource):
 
 class DisciplineItem(Resource):
     """
-    Discipline item resource
+    Discipline item resource: GET
     """
 
     def get(self, user, discipline):
         """
-        Get all routes for specific discipline for user.
+        Get all routes in specific discipline for user.
         """
         # find the approriate user with the id
         db_user = User.query.filter_by(id=user).first()
@@ -72,7 +72,7 @@ class DisciplineItem(Resource):
         if db_discipline is None:
             return create_error_response(
                         404, "Not found",
-                        "No discipline was found with the id {}".format(grade)
+                        "No discipline was found with the id {}".format(discipline)
                         )
 
         # response body with proper controls
@@ -84,7 +84,7 @@ class DisciplineItem(Resource):
         body.add_control_disciplines_all(user)
         body["items"] = []
 
-        # get the routes with proper discipline, and only get unique values
+        # get the routes with specific discipline
         for db_route in Route.query.filter(Route.user==db_user).filter(Route.disciplineId==discipline).all():
             item = RouteBuilder(
                         date=db_route.date.isoformat(),

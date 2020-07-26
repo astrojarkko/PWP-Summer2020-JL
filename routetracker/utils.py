@@ -11,6 +11,9 @@ class MasonBuilder(dict):
     elements into the object but mostly is just a parent for the much more
     useful subclass defined next. This class is generic in the sense that it
     does not contain any application specific implementation details.
+
+
+    COPIED DIRECTLY FROM COURSE MATERIAL
     """
 
     def add_error(self, title, details):
@@ -66,7 +69,8 @@ class MasonBuilder(dict):
 
 class RouteBuilder(MasonBuilder):
     """
-    schemas and controls for all resources used by the API
+    schemas and controls for all resources used by the API, adopted following
+    the course material
     """
 
     @staticmethod
@@ -105,7 +109,7 @@ class RouteBuilder(MasonBuilder):
         props = schema["properties"] = {}
         props["date"] = {
             "description": "date when the route was climbed",
-            "type": "date"
+            "type": "string"
         }
         props["lastName"] = {
             "location": "location where the route was climbed",
@@ -296,6 +300,9 @@ class RouteBuilder(MasonBuilder):
 
 
 def create_error_response(status_code, title, message=None):
+    """
+    Create error responses easily. Copied directly from course material.
+    """
     resource_url = request.path
     body = MasonBuilder(resource_url=resource_url)
     body.add_error(title, message)

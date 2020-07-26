@@ -16,7 +16,7 @@ This file includes the classes for the Route model resources of the API
 
 class RouteCollection(Resource):
     """
-    Route collection resource
+    Route collection resource: GET, POST
     """
 
     def get(self, user):
@@ -42,7 +42,8 @@ class RouteCollection(Resource):
         body.add_control_grades_all(user)
         body["items"] = []
 
-        # use that to get the routes
+        # use user id to get the routes, and add them to list
+        # functions even if there are no routes
         for db_route in Route.query.filter_by(user=db_user):
             item = RouteBuilder(
                         date=db_route.date.isoformat(),  # convert date to isoformat
@@ -60,7 +61,6 @@ class RouteCollection(Resource):
             item.add_control("profile", ROUTE_PROFILE)
             body["items"].append(item)
         return Response(json.dumps(body), 200, mimetype=MASON)
-
 
     def post(self, user):
         """
@@ -86,14 +86,15 @@ class RouteCollection(Resource):
                         )
 
         # test if date is in the right format: YYYY-MM-DD
+        # Adapted following documentation for datetime and stackoverflow suggestions
         date_string = request.json["date"]
         try:
             date = datetime.strptime(date_string, '%Y-%m-%d')
         except ValueError:
             return create_error_response(400, "Wrong date format", "Date was not given in YYYY-MM-DD format.")
 
-        # check if the location, discipline, or grade already exists, it it does
-        # then use the already found one
+        # check if the location, discipline, or grade already exists.
+        # use the already existing instance if they are found.
         location = db.session.query(Location).filter_by(name=request.json["location"]).first()
         if not location:
             location = Location(name=request.json["location"])
@@ -123,14 +124,9 @@ class RouteCollection(Resource):
                         grade=grade
                     )
 
-        # try to commit to db
-        try:
-            db.session.add(route)
-            db.session.commit()
-        except IntegrityError:
-            return create_error_response(
-                        401, "Access denied",
-                        "You can not perform this action.")
+        # commit to db
+        db.session.add(route)
+        db.session.commit()
 
         # get the ID of the just commited route
         route = route.id
@@ -139,7 +135,7 @@ class RouteCollection(Resource):
 
 class RouteItem(Resource):
     """
-    Route item resource
+    Route item resource: GET, PUT, DELETE
     """
 
     def get(self, user, route):
@@ -246,14 +242,9 @@ class RouteItem(Resource):
             db_route.discipline = discipline
             db_route.grade = grade
 
-        # try to commit to db
-        try:
-            db.session.commit()
-        except IntegrityError:
-            return create_error_response(
-                        409, "Already exists",
-                        "Route with id '{}' already exists.".format(route)
-                        )
+        # commit
+        db.session.commit()
+
         return Response(status=204)
 
     def delete(self, user, route):

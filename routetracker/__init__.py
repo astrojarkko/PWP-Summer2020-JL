@@ -1,6 +1,7 @@
 import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from routetracker.constants import *
 
 db = SQLAlchemy()
 
@@ -19,7 +20,7 @@ def create_app(test_config=None):
     )
 
     if test_config is None:
-        app.config.from_pyfile("config.py", silent=True)
+        app.config.from_pyfile("config.py", silent=True)  # pragma: no cover
     else:
         app.config.from_mapping(test_config)
 
@@ -29,10 +30,19 @@ def create_app(test_config=None):
         pass
 
     db.init_app(app)
+
     from . import models
     from . import api
     app.cli.add_command(models.init_db_command)
     app.cli.add_command(models.generate_test_data)
     app.register_blueprint(api.api_bp)
+
+    @app.route(LINK_RELATIONS_URL)
+    def send_link_relations():
+        return "link relations"
+
+    @app.route("/profiles/<profile>/")
+    def send_profile(profile):
+        return "you requests {} profile".format(profile)
 
     return app

@@ -14,7 +14,7 @@ This file includes the classes for the User model resources of the API
 
 class UserCollection(Resource):
     """
-    The user collection resource.
+    The user collection resource: GET, POST
     """
 
     def get(self):
@@ -28,6 +28,7 @@ class UserCollection(Resource):
         body.add_control_all_users()
         body.add_control_add_user()
         body["items"] = []
+        # create list of all users
         for db_user in User.query.all():
             item = RouteBuilder(
                         email=db_user.email,
@@ -49,6 +50,7 @@ class UserCollection(Resource):
                         415, "Unsupported media type",
                         "Requests must be JSON"
                         )
+        # check that the request is correct against the schema
         try:
             validate(request.json, User.get_schema())
         except ValidationError as err:
@@ -80,7 +82,7 @@ class UserCollection(Resource):
 
 class UserItem(Resource):
     """
-    The user item resource.
+    The user item resource: GET, PUT, DELETE
     """
 
     def get(self, user):
