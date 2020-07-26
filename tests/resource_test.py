@@ -123,7 +123,7 @@ def _check_namespace(client, response, namespace):
     Checks that the "users" namespace is found from the response body, and
     that its "name" attribute is a URL that can be accessed.
 
-    MODIFIED FROM THE EXAMPLE GIVEN: added key to identify what collection
+    MODIFIED FROM THE EXAMPLE GIVEN: added key to identify what namespace
     """
 
     ns_href = response["@namespaces"][namespace]["name"]
@@ -176,6 +176,7 @@ def _check_control_post_method(ctrl, client, obj, collection):
     assert method == "post"
     assert encoding == "json"
 
+    # two schemas in use, assign correct one
     if collection == "users":
         body = _user_template()
     elif collection == "routes":
@@ -206,6 +207,7 @@ def _check_control_put_method(ctrl, client, obj, collection):
     assert method == "put"
     assert encoding == "json"
 
+    # two schemas in use, assign correct one
     if collection == "users":
         body = _user_template()
         body["email"] = obj["email"]
@@ -296,10 +298,7 @@ class TestUserCollection(object):
         body = json.loads(resp.data)
         assert body["email"] == "newone"
 
-    def test_post_wrong_mediatype(self, app):
-        """
-        Test post response to invalid request
-        """
+        # test post response to invalid request
         valid = _user_template()
         resp = app.post(self.RESOURCE_URL, data=json.dumps(valid))
         assert resp.status_code == 415
@@ -407,7 +406,7 @@ class TestRouteCollection(object):
         resp = app.get(self.INVALID_URL)
         assert resp.status_code == 404
 
-        # test the list
+        # test the content
         resp = app.get(self.RESOURCE_URL)
         assert resp.status_code == 200
         body = json.loads(resp.data)
@@ -419,7 +418,7 @@ class TestRouteCollection(object):
         _check_control_get_method("disciplines:disciplines-all", app, body)
         _check_control_get_method("grades:grades-all", app, body)
         _check_control_post_method("routes:add-route", app, body, "routes")
-        # each item should have email, firstName, and lastName
+        # each item should have information of the route and bunch of controls
         for item in body["items"]:
             assert "date" in item
             assert "location" in item
@@ -451,7 +450,7 @@ class TestRouteCollection(object):
         # we created third user, and see that the returned URL is correct
         assert resp.headers["Location"].endswith(self.RESOURCE_URL+'11/')
 
-        # now get the new user and validate data
+        # now get the new route and validate data
         resp = app.get(resp.headers["Location"])
         assert resp.status_code == 200
         body = json.loads(resp.data)
@@ -480,11 +479,8 @@ class TestRouteCollection(object):
         # we created third user, and see that the returned URL is correct
         assert resp.headers["Location"].endswith(self.RESOURCE_URL+'12/')
 
-    def test_post_wrong_mediatype(self, app):
-        """
-        Test post response to invalid request
-        """
-        valid = _user_template()
+        # test put response to invalid request
+        valid = _route_template()
         resp = app.post(self.RESOURCE_URL, data=json.dumps(valid))
         assert resp.status_code == 415
 
@@ -532,7 +528,6 @@ class TestRouteItem(object):
         """
         Tests put method to edit information of a route
         """
-        # test that we can create a new user
         valid = _route_template()
 
         # wrong Content
@@ -552,7 +547,7 @@ class TestRouteItem(object):
         resp = app.put(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 204
 
-        # do a wrong date information
+        # try wrong date information
         valid["date"] = "yesterday"
         resp = app.put(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400
@@ -576,13 +571,13 @@ class TestRouteItem(object):
         # delete user
         resp = app.delete(self.RESOURCE_URL)
         assert resp.status_code == 204
-        # can not delete it second time
+        # cannot delete it second time
         resp = app.delete(self.RESOURCE_URL)
         assert resp.status_code == 404
-        # can not delete route for user that does not exist
+        # cannot delete route for user that does not exist
         resp = app.delete(self.INVALID_USER_URL)
         assert resp.status_code == 404
-        # can not delete route that does not exist
+        # cannot delete route that does not exist
         resp = app.delete(self.INVALID_ROUTE_URL)
         assert resp.status_code == 404
 
@@ -612,7 +607,6 @@ class TestLocationCollection(object):
         _check_control_get_method("users:climbed-by", app, body)
         _check_control_get_method("routes:routes-all", app, body)
         assert len(body["items"]) == 4  # number of UNIQUE locations created above
-        # each item should have email, firstName, and lastName
         for item in body["items"]:
             assert "location" in item
             _check_control_get_method("self", app, item)
@@ -642,7 +636,6 @@ class TestLocationItem(object):
         _check_control_get_method("locations:locations-all", app, body)
         # check content
         assert len(body["items"]) == 2  # number of routes in location created above
-        # each item should have email, firstName, and lastName
         for item in body["items"]:
             assert "date" in item
             assert "location" in item
@@ -689,7 +682,6 @@ class TestDisciplineCollection(object):
         _check_control_get_method("users:climbed-by", app, body)
         _check_control_get_method("routes:routes-all", app, body)
         assert len(body["items"]) == 3  # number of UNIQUE disciplines created above
-        # each item should have email, firstName, and lastName
         for item in body["items"]:
             assert "discipline" in item
             _check_control_get_method("self", app, item)
@@ -719,7 +711,6 @@ class TestDisciplineItem(object):
         _check_control_get_method("disciplines:disciplines-all", app, body)
         # check content
         assert len(body["items"]) == 2  # number of routes in discipline created above
-        # each item should have email, firstName, and lastName
         for item in body["items"]:
             assert "date" in item
             assert "location" in item
@@ -766,7 +757,6 @@ class TestGradeCollection(object):
         _check_control_get_method("users:climbed-by", app, body)
         _check_control_get_method("routes:routes-all", app, body)
         assert len(body["items"]) == 3  # number of UNIQUE grades created above
-        # each item should have email, firstName, and lastName
         for item in body["items"]:
             assert "grade" in item
             _check_control_get_method("self", app, item)
@@ -796,7 +786,6 @@ class TestGradeItem(object):
         _check_control_get_method("grades:grades-all", app, body)
         # check content
         assert len(body["items"]) == 1  # number of routes in grade created above
-        # each item should have email, firstName, and lastName
         for item in body["items"]:
             assert "date" in item
             assert "location" in item
