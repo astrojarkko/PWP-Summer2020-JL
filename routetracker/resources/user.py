@@ -56,6 +56,10 @@ class UserCollection(Resource):
         except ValidationError as err:
             return create_error_response(400, "Invalid JSON document", str(err))
 
+        # check that email is not just empty string
+        if request.json["email"] == "":
+            return create_error_response(400, "Email can not be empty.", "Email must contain characters.")
+
         # test if firstname and lastname given, these are optional parameters
         # both need to exist in order to read either
         if "firstName" in request.json and "lastName" in request.json:
@@ -135,6 +139,10 @@ class UserItem(Resource):
             validate(request.json, User.get_schema())
         except ValidationError as err:
             return create_error_response(400, "Invalid JSON document", str(err))
+
+        # check that email is not just empty string
+        if request.json["email"] == "":
+            return create_error_response(400, "Email can not be empty.", "Email must contain characters.")
 
         # test if firstname and lastname given, these are optional parameters
         # both need to exist in order to read either

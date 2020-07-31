@@ -140,7 +140,7 @@ def generate_test_data():  # pragma: no cover
 
         # for each add three routes climbed, the locations, disciplines, and grades
         # are taken from the above lists
-        for j in range(0, 10):
+        for j in range(0, 100):
 
             # check if the location, discipline, or grade already exists, it it does
             # then use the already found one

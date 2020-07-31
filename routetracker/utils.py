@@ -111,16 +111,20 @@ class RouteBuilder(MasonBuilder):
             "description": "date when the route was climbed",
             "type": "string"
         }
-        props["lastName"] = {
-            "location": "location where the route was climbed",
+        props["location"] = {
+            "description": "location where the route was climbed",
             "type": "string"
         }
         props["discipline"] = {
-            "discipline": "discipline of the route",
+            "description": "discipline of the route",
             "type": "string"
         }
         props["grade"] = {
-            "grade": "grade of the route",
+            "description": "grade of the route",
+            "type": "string"
+        }
+        props["extraInfo"] = {
+            "description": "additional information",
             "type": "string"
         }
         return schema

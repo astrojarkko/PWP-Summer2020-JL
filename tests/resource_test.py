@@ -282,6 +282,12 @@ class TestUserCollection(object):
         resp = app.post(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400
 
+        # email can not be empty string either
+        valid = _user_template()
+        valid["email"] = ""
+        resp = app.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400
+
         # remove firstName and lastName to see that also just minimum is OK
         valid = _user_template()
         valid["email"] = "newone"
@@ -372,6 +378,12 @@ class TestUserItem(object):
         # remove email to see that it is not accepted
         valid = _user_template()
         valid.pop("email")
+        resp = app.put(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400
+
+        # email can not be empty string either
+        valid = _user_template()
+        valid["email"] = ""
         resp = app.put(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400
 
@@ -466,6 +478,20 @@ class TestRouteCollection(object):
         resp = app.post(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400
 
+        # location, discipline, or grade can not be empty string
+        valid = _route_template()
+        valid["location"] = ""
+        resp = app.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400
+        valid = _route_template()
+        valid["discipline"] = ""
+        resp = app.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400
+        valid = _route_template()
+        valid["grade"] = ""
+        resp = app.post(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400
+
         # date is required among other items, we should get 400 back without it
         valid.pop("date")
         resp = app.post(self.RESOURCE_URL, json=valid)
@@ -549,6 +575,20 @@ class TestRouteItem(object):
 
         # try wrong date information
         valid["date"] = "yesterday"
+        resp = app.put(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400
+
+        # location, discipline, or grade can not be empty string
+        valid = _route_template()
+        valid["location"] = ""
+        resp = app.put(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400
+        valid = _route_template()
+        valid["discipline"] = ""
+        resp = app.put(self.RESOURCE_URL, json=valid)
+        assert resp.status_code == 400
+        valid = _route_template()
+        valid["grade"] = ""
         resp = app.put(self.RESOURCE_URL, json=valid)
         assert resp.status_code == 400
 

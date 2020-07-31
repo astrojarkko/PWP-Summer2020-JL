@@ -20,7 +20,7 @@ def create_app(test_config=None):
     )
 
     if test_config is None:
-        app.config.from_pyfile("config.py", silent=True)  # pragma: no cover
+        app.config.from_pyfile("config.py", silent=True)
     else:
         app.config.from_mapping(test_config)
 
@@ -44,5 +44,13 @@ def create_app(test_config=None):
     @app.route("/profiles/<profile>/")
     def send_profile(profile):
         return "you requests {} profile".format(profile)
+
+    @app.route("/admin/")
+    def admin_site():
+        return app.send_static_file("html/admin.html")
+
+    @app.route("/login/")
+    def login_site():
+        return app.send_static_file("html/login.html")
 
     return app

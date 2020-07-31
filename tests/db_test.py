@@ -384,9 +384,62 @@ def test_route_values(app):
         assert route.extraInfo is None
 
 
+def test_update_cascade(app):
+    """
+    test that updates on values cascade from table to table:
+    """
+    with app.app_context():
+        # create a route manually
+        user = get_user()
+        location = get_location()
+        discipline = get_discipline()
+        grade = get_grade()
+
+        route = Route(
+                      id=1,
+                      user=user,
+                      date=datetime.today(),
+                      location=location,
+                      discipline=discipline,
+                      grade=grade
+                      )
+        db.session.add(route)
+        db.session.commit()
+
+        # user data can be changed
+        user.email = "second@test.com"
+        user.firstName = "Testing"
+        user.lastName = "Isfun"
+        db.session.commit()
+        assert user.email == "second@test.com"
+        assert user.firstName == "Testing"
+        assert user.lastName == "Isfun"
+
+        # location, discipline, and grade names can be changed
+        location.name = "thisisatest"
+        discipline.name = "thisisatest"
+        grade.name = "thisisatest"
+        db.session.commit()
+        assert location.name == "thisisatest"
+        assert discipline.name == "thisisatest"
+        assert grade.name == "thisisatest"
+
+        # foreign keys in routes need to be able to be updated as well
+        location = Location(name="takapiha")
+        discipline = Discipline(name="se edellä puuhun")
+        grade = Grade(name="2A")
+        route.location = location
+        route.discipline = discipline
+        route.grade = grade
+        db.session.commit()
+        assert route.location.name == "takapiha"
+        assert route.discipline.name == "se edellä puuhun"
+        assert route.grade.name == "2A"
+
+
 def test_delete_cascade(app):
     """
-    test ON DELETE behaviour:
+    test ON DELETE cascading between tables
     """
     with app.app_context():
         # create a route manually
@@ -443,56 +496,3 @@ def test_delete_cascade(app):
         db.session.delete(grade)
         db.session.commit()
         assert route.gradeId is None
-
-
-def test_update_cascade(app):
-    """
-    And finally test as well that updates on values cascade too:
-    """
-    with app.app_context():
-        # create a route manually
-        user = get_user()
-        location = get_location()
-        discipline = get_discipline()
-        grade = get_grade()
-
-        route = Route(
-                      id=1,
-                      user=user,
-                      date=datetime.today(),
-                      location=location,
-                      discipline=discipline,
-                      grade=grade
-                      )
-        db.session.add(route)
-        db.session.commit()
-
-        # user data can be changed
-        user.email = "second@test.com"
-        user.firstName = "Testing"
-        user.lastName = "Isfun"
-        db.session.commit()
-        assert user.email == "second@test.com"
-        assert user.firstName == "Testing"
-        assert user.lastName == "Isfun"
-
-        # location, discipline, and grade names can be changed
-        location.name = "thisisatest"
-        discipline.name = "thisisatest"
-        grade.name = "thisisatest"
-        db.session.commit()
-        assert location.name == "thisisatest"
-        assert discipline.name == "thisisatest"
-        assert grade.name == "thisisatest"
-
-        # foreign keys in routes need to be able to be updated as well
-        location = Location(name="takapiha")
-        discipline = Discipline(name="se edellä puuhun")
-        grade = Grade(name="2A")
-        route.location = location
-        route.discipline = discipline
-        route.grade = grade
-        db.session.commit()
-        assert route.location.name == "takapiha"
-        assert route.discipline.name == "se edellä puuhun"
-        assert route.grade.name == "2A"

@@ -35,6 +35,7 @@ class RouteCollection(Resource):
         body = RouteBuilder()
         body.add_namespace("routes", LINK_RELATIONS_URL)
         body.add_control("self", url_for("api.routecollection", user=user))
+        body.add_control_climbed_by(user)
         body.add_control_routes_all(user)
         body.add_control_add_route(user)
         body.add_control_locations_all(user)
@@ -92,6 +93,14 @@ class RouteCollection(Resource):
             date = datetime.strptime(date_string, '%Y-%m-%d')
         except ValueError:
             return create_error_response(400, "Wrong date format", "Date was not given in YYYY-MM-DD format.")
+
+        # check that location, discipline and grade are not just empty strings
+        if request.json["location"] == "":
+            return create_error_response(400, "Entry can not be empty.", "Location must contain characters.")
+        elif request.json["discipline"] == "":
+            return create_error_response(400, "Entry can not be empty.", "Discipline must contain characters.")
+        elif request.json["grade"] == "":
+            return create_error_response(400, "Entry can not be empty.", "Grade must contain characters.")
 
         # check if the location, discipline, or grade already exists.
         # use the already existing instance if they are found.
@@ -214,6 +223,14 @@ class RouteItem(Resource):
             date = datetime.strptime(date_string, '%Y-%m-%d')
         except ValueError:
             return create_error_response(400, "Wrong date format", "Date was not given in YYYY-MM-DD format.")
+
+        # check that location, discipline and grade are not just empty strings
+        if request.json["location"] == "":
+            return create_error_response(400, "Entry can not be empty.", "Location must contain characters.")
+        elif request.json["discipline"] == "":
+            return create_error_response(400, "Entry can not be empty.", "Discipline must contain characters.")
+        elif request.json["grade"] == "":
+            return create_error_response(400, "Entry can not be empty.", "Grade must contain characters.")
 
         # check if the location, discipline, or grade already exists, it it does
         # then use the already found one

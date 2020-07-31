@@ -1,10 +1,10 @@
-# PWP SUMMER 2020
-# Climbing route tracker and training planner
-# Group information
+# PWP SUMMER 2020: Climbing route tracker and training planner
+
+## Group information
+
 * Student 1. Jarkko Laine, jarkko.laine@kapsi.fi
 
 With one final deadline, and single meeting in August.
-
 
 ## How to setup environment
 
@@ -50,8 +50,11 @@ After this the API can be with the command:
 
 ### Accessing API with client
 
-TODO
+After flask server is running, the API client can be accessed by pointing your favourite web browser to the address:
 
+    http://localhost:5000/login/
+
+The API client is rather rudimentary, but shows functionality of all the main features of the API. The API client follows much of the same interface and code design as the examples given in the course exercise 4.
 
 ### Running tests
 
@@ -74,5 +77,4 @@ which are raised by the (old) libraries used in the course in version 3.8.2 of P
 
 ## Sources used
 
-Much of the code is based or motivated by the examples given in the [course material](https://lovelace.oulu.fi/ohjelmoitava-web/programmable-web-project-summer-2020/), and
-the [sensorhub example API](https://github.com/enkwolf/pwp-course-sensorhub-api-example).
+Much of the code is based or at the very least heavily motivated by the examples given in the [course material](https://lovelace.oulu.fi/ohjelmoitava-web/programmable-web-project-summer-2020/), and the [sensorhub example API](https://github.com/enkwolf/pwp-course-sensorhub-api-example).
