@@ -439,7 +439,7 @@ def test_update_cascade(app):
 
 def test_delete_cascade(app):
     """
-    test ON DELETE cascading between tables
+    test delete cascading between tables:
     """
     with app.app_context():
         # create a route manually

@@ -15,7 +15,7 @@ from routetracker.models import User, Route, Location, Discipline, Grade
 
 
 """
-API unit testing, adopted from the resource_test.py example given in:
+API unit testing, adopted following the resource_test.py example given in:
 pwp-course-sensorhub-api-example
 """
 

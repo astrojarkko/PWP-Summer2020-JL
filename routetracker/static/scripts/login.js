@@ -1,6 +1,6 @@
 //  NOTE: this file is heavily based on the full example given in the course exercices
 //
-// Changes have been made to adapt it to the routetracker API.
+// Large changes have been made to adapt it to the routetracker API.
 
 
 "use strict";

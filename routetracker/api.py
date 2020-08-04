@@ -9,7 +9,7 @@ from routetracker.resources.grade import GradeCollection, GradeItem
 
 
 """
-Adapted from the pwp-course-sensorhub-api-example api.py example
+Adapted following the pwp-course-sensorhub-api-example api.py example
 """
 
 api_bp = Blueprint("api", __name__, url_prefix="/api")
