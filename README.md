@@ -17,15 +17,23 @@ has been constructed in.
 
 ### Python virtual environment
 
-Use the command below in a terminal to create virtual environment:
+Move to the project folder:
 
-    python -m venv PWP-Summer2020-JL
+    cd PWP-Summer2020-JL
+
+Create virtual environment (assumes that venv package has been installed for Python already):
+
+    python -m venv pwp-venv
 
 Then activate it:
 
-    source path-to-PWP-Summer2020-JL/bin/activate
+    source pwp-venv/bin/activate
 
 ### Python version and dependencies
+
+First make sure wheel is installed before continuing with the rest of the requirements:
+
+    pip install wheel
 
 Project has been coded with Python version 3.8.2, which necessitated changing some of the packages to newer versions
 than what used during the course otherwise (namely werkzeug from 0.15.1 to 0.15.5). Install the required packages with:
@@ -38,14 +46,14 @@ And to install the project run the following command in the project main folder:
 
 ### Environment variables
 
-Again in a terminal:
+Use the script:
+
+    source dev_env.sh
+
+Or in a terminal:
 
     export FLASK_APP=routetracker
     export FLASK_ENV=DEVELOPMENT
-
-Or use the script:
-
-    source dev_env.sh
 
 ### Initializing database and running API
 
