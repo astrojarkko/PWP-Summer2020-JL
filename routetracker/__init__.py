@@ -45,10 +45,6 @@ def create_app(test_config=None):
     def send_profile(profile):
         return "you requests {} profile".format(profile)
 
-    @app.route("/admin/")
-    def admin_site():
-        return app.send_static_file("html/admin.html")
-
     @app.route("/login/")
     def login_site():
         return app.send_static_file("html/login.html")
