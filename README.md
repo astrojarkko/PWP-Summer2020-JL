@@ -68,7 +68,7 @@ After this the API can be run with the command:
 
 ## Accessing API
 
-# With e.g. Talend API tester
+### With e.g. Talend API tester
 
 User the entry point:
 
@@ -76,7 +76,7 @@ User the entry point:
     
 After which point the controls of the response and its items should point paths forward.
 
-# With client
+### With client
 
 After flask server is running, the API client can be accessed by pointing your favourite web browser to the address:
 
