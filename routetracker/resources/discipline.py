@@ -28,7 +28,7 @@ class DisciplineCollection(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
 
         # response body with proper controls
@@ -65,7 +65,7 @@ class DisciplineItem(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
         # test if discipline is found for user
         db_discipline = Route.query.filter(Route.user==db_user).filter(Route.disciplineId==discipline).first()

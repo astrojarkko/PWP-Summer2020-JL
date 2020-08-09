@@ -28,7 +28,7 @@ class GradeCollection(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
 
         # response body with proper controls
@@ -66,7 +66,7 @@ class GradeItem(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
         # test if grade is found for user
         db_grade = Route.query.filter(Route.user==db_user).filter(Route.gradeId==grade).first()

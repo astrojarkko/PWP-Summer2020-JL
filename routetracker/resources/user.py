@@ -78,7 +78,7 @@ class UserCollection(Resource):
         except IntegrityError:
             return create_error_response(
                         409, "Already exists",
-                        "User with email '{}' already exists.".format(request.json["email"])
+                        "Email '{}' is already taken.".format(request.json["email"])
                         )
 
         return Response(status=201, headers={"Location": url_for("api.useritem", user=user.id)})
@@ -98,7 +98,7 @@ class UserItem(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
 
         # build response body
@@ -128,7 +128,7 @@ class UserItem(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
         if not request.json:
             return create_error_response(
@@ -159,7 +159,7 @@ class UserItem(Resource):
         except IntegrityError:
             return create_error_response(
                         409, "Already exists",
-                        "User with email '{}' already exists.".format(request.json["email"])
+                        "Email '{}' is already taken.".format(request.json["email"])
                         )
         return Response(status=204)
 
@@ -172,7 +172,7 @@ class UserItem(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
 
         db.session.delete(db_user)

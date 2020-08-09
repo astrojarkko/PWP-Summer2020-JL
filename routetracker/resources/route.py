@@ -28,7 +28,7 @@ class RouteCollection(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
 
         # response body with proper controls
@@ -83,7 +83,7 @@ class RouteCollection(Resource):
         if user_db is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
 
         # test if date is in the right format: YYYY-MM-DD
@@ -156,7 +156,7 @@ class RouteItem(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
 
         # test if route exists for this user
@@ -198,7 +198,7 @@ class RouteItem(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
         # test if route exists for this user
         db_route = Route.query.filter(Route.user==db_user).filter(Route.id==route).first()
@@ -273,7 +273,7 @@ class RouteItem(Resource):
         if db_user is None:
             return create_error_response(
                         404, "Not found",
-                        "No user was found with the id {}".format(user)
+                        "User not found"
                         )
 
         # test if route exists for this user
