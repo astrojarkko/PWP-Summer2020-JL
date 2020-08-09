@@ -66,7 +66,17 @@ After this the API can be run with the command:
 
     flask run
 
-## Accessing API with client
+## Accessing API
+
+# With e.g. Talend API tester
+
+User the entry point:
+
+    http://localhost:5000/api/users/
+    
+After which point the controls of the response and its items should point paths forward.
+
+# With client
 
 After flask server is running, the API client can be accessed by pointing your favourite web browser to the address:
 
